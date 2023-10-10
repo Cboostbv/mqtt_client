@@ -1,12 +1,18 @@
 mqtt_client:
   ros__parameters:
     broker:
-      host: localhost
+      host: 172.17.0.1
       port: 1883
     bridge:
-      ros2mqtt:
-        ros_topic: /ping/ros
-        mqtt_topic: pingpong/ros
-      mqtt2ros:
-        mqtt_topic: pingpong/ros
-        ros_topic: /pong/ros
+      ros2mqtt:                     # Object specifying which ROS topics to map to which MQTT topics
+        ros_topics:                 # Array specifying which ROS topics to bridge
+          - /ping/ros               # The ROS topic that should be bridged, corresponds to the sub-object in the YAML
+        /ping/ros:  
+          mqtt_topic: pingpong/ros  # MQTT topic on which the corresponding ROS messages are sent to the broker
+          primitive: true
+      mqtt2ros:                     # Object specifying which MQTT topics to map to which ROS topics
+        mqtt_topics:                # Array specifying which ROS topics to bridge
+          - pingpong/ros            # The MQTT topic that should be bridged, corresponds to the sub-object in the YAML
+        pingpong/ros:
+          ros_topic: /pong/ros      # ROS topic on which corresponding MQTT messages are published
+          primitive: true

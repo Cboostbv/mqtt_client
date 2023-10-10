@@ -1,5 +1,5 @@
 broker:
-  host: localhost
+  host: 172.17.0.1
   port: 1883
 bridge:
   ros2mqtt:

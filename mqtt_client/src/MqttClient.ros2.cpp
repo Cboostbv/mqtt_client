@@ -555,8 +555,7 @@ void MqttClient::connect() {
 
 void MqttClient::ros2mqtt(
   const std::shared_ptr<rclcpp::SerializedMessage>& serialized_msg,
-  const std::string& ros_topic) {
-
+  const std::string& ros_topic) { 
   Ros2MqttInterface& ros2mqtt = ros2mqtt_[ros_topic];
   std::string mqtt_topic = ros2mqtt.mqtt.topic;
   std::vector<uint8_t> payload_buffer;
@@ -604,14 +603,16 @@ void MqttClient::ros2mqtt(
       mqtt::message_ptr mqtt_msg =
         mqtt::make_message(mqtt_topic, msg_type_buffer.data(),
                            msg_type_buffer.size(), ros2mqtt.mqtt.qos, true);
+      std::cout << "----"; 
+      std::cout << mqtt_msg; 
       client_->publish(mqtt_msg);
+
     } catch (const mqtt::exception& e) {
       RCLCPP_WARN(
         get_logger(),
         "Publishing ROS message type information to MQTT topic '%s' failed: %s",
         mqtt_topic.c_str(), e.what());
     }
-
     // build MQTT payload for ROS message (R) as [R]
     // or [S, R] if timestamp (S) is included
     uint32_t msg_length = serialized_msg->size();
@@ -929,6 +930,7 @@ void MqttClient::message_arrived(mqtt::const_message_ptr mqtt_msg) {
 
       mqtt2ros.ros.msg_type = ros_msg_type.name;
       mqtt2ros.stamped = ros_msg_type.stamped;
+      std::cout
       RCLCPP_INFO(get_logger(),
                   "ROS publisher message type on topic '%s' set to '%s'",
                   mqtt2ros.ros.topic.c_str(), ros_msg_type.name.c_str());
