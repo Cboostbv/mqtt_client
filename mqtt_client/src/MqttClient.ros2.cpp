@@ -1009,5 +1009,4 @@ void MqttClient::on_failure(const mqtt::token& token) {
   is_connected_ = false;
 }
 
-}  // namespace mqtt_client
->>>>>>> 6a1287cd51113d834a8a18375ec76e52fc0e6509
+}  
